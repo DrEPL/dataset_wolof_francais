@@ -1,0 +1,15 @@
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Secrets
+.env
+
+# Données intermédiaires locales
+data/interim/
+
+# Les sorties finales sont gérées par DVC
+data/processed/*.csv
