@@ -1,5 +1,14 @@
 
 stages:
+  build:
+    cmd: python scripts/build_from_text.py
+    deps:
+      - scripts/build_from_text.py
+      - data/unstructured
+    outs:
+      - data/raw:
+          cache: false
+
   clean:
     cmd: python scripts/clean_data.py
     deps:
