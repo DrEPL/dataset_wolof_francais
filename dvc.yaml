@@ -1,0 +1,23 @@
+
+stages:
+  clean:
+    cmd: python scripts/clean_data.py
+    deps:
+      - scripts/clean_data.py
+      - data/raw
+    outs:
+      - data/interim/cleaned.csv:
+          cache: false
+
+  prepare:
+    cmd: python scripts/prepare_dataset.py
+    deps:
+      - scripts/prepare_dataset.py
+      - data/interim/cleaned.csv
+    params:
+      - params.yaml:
+          - prepare_dataset
+    outs:
+      - data/processed/train.csv
+      - data/processed/validation.csv
+      - data/processed/test.csv

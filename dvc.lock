@@ -1,0 +1,50 @@
+schema: '2.0'
+stages:
+  clean:
+    cmd: python scripts/clean_data.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 88b6c199f36c4594f7f292253c1ae194.dir
+      size: 1166618
+      nfiles: 1
+    - path: scripts/clean_data.py
+      hash: md5
+      md5: 07e0ef41b5862eac8e9ea196f5caf0e7
+      size: 6426
+    outs:
+    - path: data/interim/cleaned.csv
+      hash: md5
+      md5: 60e9d5d205ec8030794ad53284d24989
+      size: 455212
+  prepare:
+    cmd: python scripts/prepare_dataset.py
+    deps:
+    - path: data/interim/cleaned.csv
+      hash: md5
+      md5: 60e9d5d205ec8030794ad53284d24989
+      size: 455212
+    - path: scripts/prepare_dataset.py
+      hash: md5
+      md5: df011f1cdc73ae9d7f8126507b68506f
+      size: 7302
+    params:
+      params.yaml:
+        prepare_dataset:
+          seed: 42
+          train_ratio: 0.8
+          validation_ratio: 0.1
+          test_ratio: 0.1
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 29c57260b853b98c827c873776879e6b
+      size: 98971
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 71d06f3416b28f5c7382eb2767a55477
+      size: 812608
+    - path: data/processed/validation.csv
+      hash: md5
+      md5: bb34f0e0e7547cdadb61601d9b1843ab
+      size: 101086
