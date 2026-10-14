@@ -5,9 +5,9 @@ stages:
     deps:
     - path: data/raw
       hash: md5
-      md5: 88b6c199f36c4594f7f292253c1ae194.dir
-      size: 1166618
-      nfiles: 1
+      md5: 85837ff13c4e824e54b89188aea49a81.dir
+      size: 4318173
+      nfiles: 10
     - path: scripts/clean_data.py
       hash: md5
       md5: 07e0ef41b5862eac8e9ea196f5caf0e7
@@ -48,3 +48,21 @@ stages:
       hash: md5
       md5: bb34f0e0e7547cdadb61601d9b1843ab
       size: 101086
+  build:
+    cmd: python scripts/build_from_text.py
+    deps:
+    - path: data/unstructured
+      hash: md5
+      md5: 59c4685b65ec78d7baefae82a3947bfe.dir
+      size: 846653
+      nfiles: 4
+    - path: scripts/build_from_text.py
+      hash: md5
+      md5: 05b5d45d731135aefb8d941a3428b625
+      size: 10611
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: 85837ff13c4e824e54b89188aea49a81.dir
+      size: 4318173
+      nfiles: 10
