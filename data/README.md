@@ -174,7 +174,7 @@ python -m venv venv
 # source venv/bin/activate
 
 # 3. Installer les dépendances nécessaires
-pip install dvc pandas pyyaml datasets
+pip install -r requirements.txt
 ```
 
 ---
