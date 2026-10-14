@@ -1,4 +1,4 @@
-# 🇸🇳 Dataset de Traduction Automatique Wolof ↔ Français
+# Dataset de Traduction Automatique Wolof ↔ Français
 
 Pipeline de données MLOps pour la préparation d'un corpus de traduction automatique bidirectionnelle **Wolof ↔ Français**, orchestré et versionné avec **DVC** et **Git**.
 
