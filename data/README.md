@@ -154,21 +154,104 @@ Le pipeline de données est entièrement orchestré via **DVC** ([`dvc.yaml`](fi
    train.csv        validation.csv        test.csv
 ```
 
-### Commandes Utiles
 
-* **Exécuter ou mettre à jour tout le pipeline :**
-  ```bash
-  dvc repro
-  ```
-* **Vérifier l'état de synchronisation :**
-  ```bash
-  dvc status
-  ```
-* **Exécution manuelle (script par script) :**
-  ```bash
-  python scripts/clean_data.py
-  python scripts/prepare_dataset.py
-  ```
+---
+
+## 🚀 Guide d'Exécution et Commandes DVC
+
+### 1. Prérequis & Installation de l'environnement
+
+```bash
+# 1. Cloner le dépôt et se placer dans le projet
+cd dataset_wolof_francais
+
+# 2. Créer et activer l'environnement virtuel Python
+python -m venv venv
+
+# Windows (PowerShell) :
+.\venv\Scripts\Activate.ps1
+# Linux / macOS :
+# source venv/bin/activate
+
+# 3. Installer les dépendances nécessaires
+pip install dvc pandas pyyaml datasets
+```
+
+---
+
+### 2. Comment Lancer le Système (Scénarios Types)
+
+#### Scénario A : Exécution rapide du pipeline (Recommandé)
+DVC compare les empreintes numériques (`md5`) de votre code, de vos données brutes et de vos paramètres. Il n'exécute que ce qui a changé :
+
+```bash
+# Lancer ou mettre à jour tout le pipeline
+dvc repro
+```
+
+*Résultat attendu :*
+1. Exécution de l'étape `clean` (`scripts/clean_data.py`) → produit `data/interim/cleaned.csv`
+2. Exécution de l'étape `prepare` (`scripts/prepare_dataset.py`) → produit `data/processed/train.csv`, `validation.csv`, `test.csv`
+3. Mise à jour automatique de `dvc.lock`
+
+#### Scénario B : Modification des hyperparamètres
+Si vous modifiez un ratio de split, une longueur minimale ou une seed dans `params.yaml` :
+
+```bash
+# 1. Modifier params.yaml (ex. train_ratio: 0.85, test_ratio: 0.05)
+# 2. Relancer le pipeline : DVC sait que seule l'étape 'prepare' est impactée !
+dvc repro
+
+# 3. Sauvegarder l'état dans git
+git add params.yaml dvc.lock
+git commit -m "tune: adjust split ratios to 85/10/5"
+```
+
+#### Scénario C : Ajout de nouvelles données brutes
+Lorsque vous déposez un nouveau fichier dans `data/raw/` (ex. `batch_2026_02.jsonl` ou un nouveau CSV) :
+
+```bash
+# 1. Déposer le fichier dans data/raw/
+# 2. Enregistrer le nouveau hash du dossier data/raw dans DVC
+dvc add data/raw
+
+# 3. Relancer le pipeline (toutes les étapes se recalculeront automatiquement)
+dvc repro
+
+# 4. Versionner les pointeurs DVC et le lockfile dans git
+git add data/raw.dvc data/.gitignore dvc.lock
+git commit -m "data: add batch_2026_02 and re-run pipeline"
+```
+
+---
+
+### 3. Boîte à Outils des Commandes DVC
+
+| Commande | Rôle |
+|---|---|
+| `dvc repro` | Exécute intelligemment les étapes dont le code, les données ou les paramètres ont changé. |
+| `dvc repro -f` | Force l'exécution de toutes les étapes du pipeline, même sans changement détecté. |
+| `dvc repro clean` | Exécute uniquement l'étape de nettoyage `clean`. |
+| `dvc repro prepare` | Exécute uniquement l'étape de préparation et split `prepare`. |
+| `dvc status` | Affiche l'état des dépendances et indique si le pipeline est à jour ou a divergé. |
+| `dvc dag` | Affiche l'arbre de dépendances (DAG) du pipeline directement dans le terminal. |
+| `dvc add data/raw` | Indexe le dossier des données brutes pour le suivi par DVC sans charger git. |
+| `dvc push` | Envoie les fichiers de données volumineux vers le stockage distant (S3, DagsHub, etc.). |
+| `dvc pull` | Récupère les données trackées par DVC sur une nouvelle machine ou un nouveau clone. |
+
+---
+
+### 4. Exécution Alternative (Sans passer par DVC)
+
+Pour débugger ou exécuter manuellement chaque script en Python pur :
+
+```bash
+# Étape 1 : Nettoyage -> data/interim/cleaned.csv
+python scripts/clean_data.py
+
+# Étape 2 : Doublement bidirectionnel & Split -> data/processed/*.csv
+python scripts/prepare_dataset.py
+```
 
 ---
 
@@ -178,3 +261,4 @@ Le pipeline de données est entièrement orchestré via **DVC** ([`dvc.yaml`](fi
 - **Séparateur CSV :** Virgule (`,`).
 - **Codes de langues cibles :** Codes FLORES-200 / NLLB-200 (`wol_Latn` pour le Wolof en alphabet latin, `fra_Latn` pour le Français).
 - **Règle d'or :** Aucun fichier dans `data/interim/` ou `data/processed/` ne doit être édité à la main ; toute modification passe par l'ajustement de `params.yaml` ou des scripts, suivi de `dvc repro`.
+
