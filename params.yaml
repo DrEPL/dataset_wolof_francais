@@ -1,0 +1,19 @@
+
+# ── Nettoyage ──────────────────────────────────────────────────────────────────
+clean_data:
+  remove_duplicates: true
+  min_wolof_chars: 2
+  min_french_chars: 2
+
+# ── Doublement bidirectionnel (WO→FR + FR→WO) ─────────────────────────────────
+double_examples:
+  wolof_lang_code: "wol_Latn"
+  french_lang_code: "fra_Latn"
+  shuffle_seed: 42
+
+# ── Split train / validation / test ───────────────────────────────────────────
+prepare_dataset:
+  seed: 42
+  train_ratio: 0.80
+  validation_ratio: 0.10
+  test_ratio: 0.10
