@@ -1,4 +1,7 @@
 [core]
     remote = origin
 ['remote "origin"']
-    url = https://dagshub.com/DrEPL/ml-translation-wo-fr.dvc
+    url = s3://dvc
+    endpointurl = https://dagshub.com/DrEPL/ml-translation-wo-fr.s3
+['remote "default"']
+    url = ../origin
