@@ -8,7 +8,8 @@ venv/
 # Secrets
 .env
 
-# Données intermédiaires locales
+# Données générées par le pipeline DVC
+data/raw/
 data/interim/
 
 # Les sorties finales sont gérées par DVC

@@ -120,5 +120,6 @@ data/raw/ ──► [clean_data.py] ──► data/interim/cleaned.csv ──►
 | **Ajouter des données brutes** | `dvc add data/raw` | Met à jour le suivi DVC après l'ajout de nouveaux fichiers bruts. |
 | **Sauvegarde distante** | `dvc push` | Envoie les données vers le remote (DagsHub). |
 | **Récupérer les données** | `dvc pull` | Télécharge les données versionnées sur une nouvelle machine. |
+| **Pousser les données sur tous les dépot distants** | `git push all-remotes main` | Pousse les données versionnées sur les repo distants. |
 
 Pour plus de détails techniques sur les données, consultez [`data/README.md`](file:///d:/Projets_IA/dataset_wolof_francais/data/README.md).
